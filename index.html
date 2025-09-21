@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/jpg" href="logo.jpg">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Galaxy_LionMC | Minecraft & More</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* Global Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(135deg, #000000, #121212);
+      color: #e0e0e0;
+      line-height: 1.6;
+    }
+
+    /* Hide all page sections by default */
+    .page {
+      display: none;
+      padding: 5rem 5% 2rem;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    /* Show the active page */
+    .page.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* Navigation */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 5%;
+      background: rgba(0, 0, 0, 0.95);
+      position: fixed;
+      width: 100%;
+      z-index: 100;
+      border-bottom: 1px solid #ff000033;
+      backdrop-filter: blur(10px);
+    }
+
+    .logo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.5rem;
+      color: #ff0000;
+      text-decoration: none;
+      text-shadow: 0 0 8px rgba(255, 0, 0, 0.7);
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 2rem;
+    }
+
+    .nav-links a {
+      color: #e0e0e0;
+      text-decoration: none;
+      transition: all 0.3s;
+      cursor: pointer;
+      font-weight: 500;
+      position: relative;
+    }
+
+    .nav-links a:hover {
+      color: #ff0000;
+      text-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #ff0000;
+      transition: width 0.3s;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .hamburger {
+      display: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #e0e0e0;
+    }
+
+    /* Hero Section (Home Page) */
+    .hero {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(18, 18, 18, 0.8)), url('https://images.unsplash.com/photo-1607237146274-08a03b5b6d2b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');
+      background-size: cover;
+      background-position: center;
+      padding: 0 5%;
+    }
+
+    .hero h1 {
+      font-size: 4rem;
+      font-family: 'Orbitron', sans-serif;
+      margin: 0;
+      background: linear-gradient(90deg, #ff0000, #ff3b3b);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 12px rgba(255, 0, 0, 0.6);
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      margin: 1rem 0;
+      max-width: 700px;
+      color: #e0e0e0;
+    }
+
+    .cta-button {
+      padding: 0.8rem 2rem;
+      border: 2px solid #ff0000;
+      background: transparent;
+      color: #e0e0e0;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      border-radius: 5px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .cta-button:hover {
+      background: #ff0000;
+      color: #000;
+      box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+      transform: scale(1.05);
+    }
+
+    /* Feature Cards */
+    .features {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin: 3rem 0;
+    }
+
+    .feature-card {
+      background: rgba(18, 18, 18, 0.9);
+      border: 1px solid #ff000033;
+      border-radius: 10px;
+      padding: 2rem;
+      width: 300px;
+      text-align: center;
+      transition: all 0.3s;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+      position: relative;
+      overflow: hidden;
+      border-top: 1px solid #ff000066;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, #ff0000, transparent);
+      transform: scaleX(0);
+      transition: transform 0.3s;
+    }
+
+    .feature-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .feature-card:hover {
+      box-shadow: 0 0 25px rgba(255, 0, 0, 0.3);
+      transform: translateY(-5px);
+      border-color: #ff000066;
+    }
+
+    .feature-card h3 {
+      font-family: 'Orbitron', sans-serif;
+      color: #ff0000;
+      margin-bottom: 1rem;
+      font-size: 1.4rem;
+    }
+
+    /* Videos Page */
+    .videos-content {
+      max-width: 1000px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .videos-content h2 {
+      font-family: 'Orbitron', sans-serif;
+      color: #ff0000;
+      margin-bottom: 2rem;
+      font-size: 2.2rem;
+      text-shadow: 0 0 8px rgba(255, 0, 0, 0.4);
+    }
+
+    .video-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      justify-content: center;
+    }
+
+    .video-card {
+      width: 320px;
+      background: rgba(18, 18, 18, 0.9);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+      border: 1px solid #ff000033;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .video-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+      border-color: #ff000066;
+    }
+
+    .video-card iframe {
+      width: 100%;
+      height: 200px;
+      border: none;
+    }
+
+    /* Music Page */
+    .music-content {
+      max-width: 600px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .music-content h2 {
+      font-family: 'Orbitron', sans-serif;
+      color: #ff0000;
+      margin-bottom: 1rem;
+      font-size: 2.2rem;
+      text-shadow: 0 0 8px rgba(255, 0, 0, 0.4);
+    }
+
+    /* Modern MP3 Player */
+    .modern-mp3-player {
+      margin: 2rem auto;
+      max-width: 500px;
+      background: rgba(18, 18, 18, 0.9);
+      border-radius: 15px;
+      padding: 1.5rem;
+      border: 1px solid #ff000033;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    }
+
+    .player-container {
+      margin-bottom: 1.5rem;
+    }
+
+    .track-info {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    .track-info h3 {
+      color: #ff0000;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.3rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .track-info p {
+      color: #aaa;
+      font-size: 0.9rem;
+    }
+
+    .player-controls {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      gap: 1rem;
+    }
+
+    .control-btn {
+      background: transparent;
+      border: none;
+      color: #e0e0e0;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: color 0.3s, transform 0.2s;
+    }
+
+    .control-btn:hover {
+      color: #ff0000;
+      transform: scale(1.1);
+    }
+
+    .progress-container {
+      flex: 1;
+      height: 5px;
+      background: #333;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 100%;
+      border-radius: 5px;
+      background: #333;
+    }
+
+    .progress {
+      height: 100%;
+      width: 0%;
+      background: #ff0000;
+      border-radius: 5px;
+      transition: width 0.1s linear;
+    }
+
+    .tracklist {
+      margin-top: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .track {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.8rem;
+      background: rgba(30, 30, 30, 0.5);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .track:hover {
+      background: rgba(40, 40, 40, 0.7);
+    }
+
+    .track p {
+      color: #e0e0e0;
+      margin: 0;
+    }
+
+    .track small {
+      color: #aaa;
+      font-size: 0.8rem;
+    }
+
+    .play-track-btn {
+      background: transparent;
+      border: none;
+      color: #e0e0e0;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: color 0.3s, transform 0.2s;
+    }
+
+    .play-track-btn:hover {
+      color: #ff0000;
+      transform: scale(1.1);
+    }
+
+    /* About Page */
+    .about-content {
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .about-content h2 {
+      font-family: 'Orbitron', sans-serif;
+      color: #ff0000;
+      margin-bottom: 1rem;
+      font-size: 2.2rem;
+      text-shadow: 0 0 8px rgba(255, 0, 0, 0.4);
+    }
+
+    /* Contact Page */
+    .contact-content {
+      max-width: 600px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .contact-content h2 {
+      font-family: 'Orbitron', sans-serif;
+      color: #ff0000;
+      margin-bottom: 1rem;
+      font-size: 2.2rem;
+      text-shadow: 0 0 8px rgba(255, 0, 0, 0.4);
+    }
+
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+      padding: 0.8rem;
+      border: 1px solid #ff000033;
+      border-radius: 5px;
+      background: rgba(18, 18, 18, 0.9);
+      color: #e0e0e0;
+      font-family: 'Montserrat', sans-serif;
+      transition: border 0.3s;
+    }
+
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+      border-color: #ff0000;
+      outline: none;
+      box-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
+    }
+
+    .contact-form button {
+      padding: 0.8rem;
+      background: #ff0000;
+      border: none;
+      border-radius: 5px;
+      color: #000;
+      font-family: 'Montserrat', sans-serif;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .contact-form button:hover {
+      background: #ff3b3b;
+      box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+      transform: scale(1.02);
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      background: rgba(0, 0, 0, 0.95);
+      margin-top: 2rem;
+      border-top: 1px solid #ff000033;
+    }
+
+    .social-icons {
+      margin: 1rem 0;
+    }
+
+    .social-icons a {
+      color: #e0e0e0;
+      font-size: 1.5rem;
+      margin: 0 0.5rem;
+      transition: all 0.3s;
+    }
+
+    .social-icons a:hover {
+      color: #ff0000;
+      text-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
+      transform: scale(1.2);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        background: rgba(0, 0, 0, 0.95);
+        padding: 1rem;
+        gap: 1rem;
+      }
+
+      .nav-links.active {
+        display: flex;
+      }
+
+      .hamburger {
+        display: block;
+      }
+
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+
+      .features {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav>
+    <a href="#" class="logo" data-page="home">Galaxy_LionMC</a>
+    <ul class="nav-links">
+      <li><a href="#" data-page="home">Home</a></li>
+      <li><a href="#" data-page="videos">Videos</a></li>
+      <li><a href="#" data-page="music">Music</a></li>
+      <li><a href="#" data-page="about">About</a></li>
+      <li><a href="#" data-page="contact">Contact</a></li>
+    </ul>
+    <div class="hamburger">☰</div>
+  </nav>
+
+  <!-- Home Page -->
+  <section id="home" class="page active">
+    <div class="hero">
+      <h1>GALAXY_LIONMC</h1>
+      <p>Explore the universe of Minecraft mods, epic builds, and redstone creations. Join me on this journey through creativity, technology, and gaming!</p>
+      <button class="cta-button">Watch Now</button>
+    </div>
+    <div class="features">
+      <div class="feature-card">
+        <h3>Minecraft Mods</h3>
+        <p>Dive into custom mods, plugins, and game mechanics. Learn how to create your own mods and enhance your Minecraft experience.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Epic Builds</h3>
+        <p>Discover jaw-dropping Minecraft builds and get inspired. Learn tips and tricks to elevate your building skills.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Redstone Creations</h3>
+        <p>Master the art of redstone with advanced tutorials. Build anything from simple traps to fully automated farms.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Videos Page -->
+  <section id="videos" class="page">
+    <div class="videos-content">
+      <h2>My Videos</h2>
+      <p>Check out my latest Minecraft and redstone tutorials, builds, and mods!</p>
+      <div class="video-container">
+        <!-- Replace with your YouTube video embeds -->
+        <div class="video-card">
+          <iframe src="https://www.youtube.com/embed/5-8D_Q93fcI" allowfullscreen></iframe>
+        </div>
+        <div class="video-card">
+          <iframe src="https://www.youtube.com/embed/gNPDOs8zMJQ" allowfullscreen></iframe>
+        </div>
+        <div class="video-card">
+          <iframe src="https://www.youtube.com/embed/1m9_M52VYgE" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Music Page -->
+  <section id="music" class="page">
+    <div class="music-content">
+      <h2>Music</h2>
+      <p>Listen to my favorite tracks while you browse. Perfect for coding or building in Minecraft!</p>
+
+      <!-- Modern MP3 Player -->
+      <div class="modern-mp3-player">
+        <div class="player-container">
+          <div class="track-info">
+            <h3 id="track-title">Track Name</h3>
+            <p id="track-artist">Artist Name</p>
+          </div>
+          <div class="player-controls">
+            <audio id="audioPlayer" src=""></audio>
+            <div class="controls">
+              <button id="playPauseBtn" class="control-btn">
+                <i class="fas fa-play"></i>
+              </button>
+              <div class="progress-container">
+                <div class="progress-bar">
+                  <div class="progress"></div>
+                </div>
+              </div>
+              <button id="muteBtn" class="control-btn">
+                <i class="fas fa-volume-up"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="tracklist">
+          <div class="track" data-src="pal pal.mp3">
+            <p><strong>PAL PAL</strong><br><small>AFUSIC</small></p>
+            <button class="play-track-btn">▶</button>
+          </div>
+          <div class="track" data-src="Afsos.mp3">
+            <p><strong>Afsos</strong><br><small>Anuv Jain</small></p>
+            <button class="play-track-btn">▶</button>
+          </div>
+          <div class="track" data-src="Wishes (Remake).mp3">
+            <p><strong>Wishes (Remake)</strong><br><small>Talwiinder</small></p>
+            <button class="play-track-btn">▶</button>
+          </div>
+          <div class="track" data-src="Samjho Na.mp3">
+            <p><strong>Samjho Na</strong><br><small>Aditya Rikhari</small></p>
+            <button class="play-track-btn">▶</button>
+          </div>
+          <div class="track" data-src="HASEEN.mp3">
+            <p><strong>HASEEN</strong><br><small>Talwiinder</small></p>
+            <button class="play-track-btn">▶</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Page -->
+  <section id="about" class="page">
+    <div class="about-content">
+      <h2>About Me</h2>
+      <p>Hi, I'm Galaxy_LionMC! I'm a passionate Minecraft player, modder, and content creator. My goal is to inspire creativity and share my knowledge with the world.</p>
+      <p>When I'm not coding or building in Minecraft, you can find me exploring new technologies, playing games, or creating music.</p>
+    </div>
+  </section>
+
+  <!-- Contact Page -->
+  <section id="contact" class="page">
+    <div class="contact-content">
+      <h2>Contact Me</h2>
+      <p>Have a question, suggestion, or just want to say hi? Fill out the form below and I'll get back to you as soon as possible!</p>
+      <form class="contact-form">
+        <input type="text" placeholder="Your Name" required>
+        <input type="email" placeholder="Your Email" required>
+        <textarea placeholder="Your Message" rows="5" required></textarea>
+        <button type="submit">Send Message</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="social-icons">
+      <a href="https://www.youtube.com/@Galaxy_LionMC">📺</a>
+      <a href="#">🐦</a>
+      <a href="https://discord.com/invite/6sVqhygqpE">💬</a>
+      <a href="https://music.youtube.com/playlist?list=PLO55nGTXzrQ2t_7sFzYTGumLsawU8zqlE">🎵</a>
+    </div>
+    <p>&copy; 2025 Galaxy_LionMC. All rights reserved.</p>
+  </footer>
+
+  <!-- JavaScript -->
+  <script>
+    // Mobile Menu Toggle
+    document.querySelector('.hamburger').addEventListener('click', () => {
+      document.querySelector('.nav-links').classList.toggle('active');
+    });
+
+    // Page Navigation
+    const navLinks = document.querySelectorAll('[data-page]');
+    navLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const pageId = link.getAttribute('data-page');
+        showPage(pageId);
+      });
+    });
+
+    function showPage(pageId) {
+      document.querySelectorAll('.page').forEach(page => {
+        page.classList.remove('active');
+      });
+      document.getElementById(pageId).classList.add('active');
+      document.querySelector('.nav-links').classList.remove('active');
+    }
+
+    // Modern MP3 Player Functionality
+    const audioPlayer = document.getElementById('audioPlayer');
+    const playPauseBtn = document.getElementById('playPauseBtn');
+    const progressBar = document.querySelector('.progress');
+    const progressContainer = document.querySelector('.progress-container');
+    const muteBtn = document.getElementById('muteBtn');
+    const trackTitle = document.getElementById('track-title');
+    const trackArtist = document.getElementById('track-artist');
+    const tracks = document.querySelectorAll('.track');
+    const playTrackBtns = document.querySelectorAll('.play-track-btn');
+
+    // Play/Pause Button
+    playPauseBtn.addEventListener('click', () => {
+      if (audioPlayer.paused) {
+        audioPlayer.play();
+        playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+      } else {
+        audioPlayer.pause();
+        playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+      }
+    });
+
+    // Progress Bar
+    audioPlayer.addEventListener('timeupdate', () => {
+      const progress = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+      progressBar.style.width = `${progress}%`;
+    });
+
+    // Click on Progress Bar to Seek
+    progressContainer.addEventListener('click', (e) => {
+      const width = progressContainer.clientWidth;
+      const clickPosition = e.offsetX;
+      const duration = audioPlayer.duration;
+      audioPlayer.currentTime = (clickPosition / width) * duration;
+    });
+
+    // Mute Button
+    muteBtn.addEventListener('click', () => {
+      if (audioPlayer.muted) {
+        audioPlayer.muted = false;
+        muteBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+      } else {
+        audioPlayer.muted = true;
+        muteBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+      }
+    });
+
+    // Track Selection
+    tracks.forEach((track, index) => {
+      track.addEventListener('click', () => {
+        const src = track.getAttribute('data-src');
+        audioPlayer.src = src;
+        audioPlayer.play();
+        playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+
+        // Update track info
+        const trackName = track.querySelector('strong').textContent;
+        const artistName = track.querySelector('small').textContent;
+        trackTitle.textContent = trackName;
+        trackArtist.textContent = artistName;
+      });
+    });
+
+    // Play Track Buttons
+    playTrackBtns.forEach((btn, index) => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const track = btn.parentElement;
+        const src = track.getAttribute('data-src');
+        audioPlayer.src = src;
+        audioPlayer.play();
+        playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+
+        // Update track info
+        const trackName = track.querySelector('strong').textContent;
+        const artistName = track.querySelector('small').textContent;
+        trackTitle.textContent = trackName;
+        trackArtist.textContent = artistName;
+      });
+    });
+  </script>
+</body>
+</html>
